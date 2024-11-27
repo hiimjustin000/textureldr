@@ -5,9 +5,10 @@ using namespace geode::prelude;
 
 static constexpr int FALLBACK_TAG = 105871529;
 
-static void assignFallbackObj(CCNode* node) {
+static void assignFallbackObj(CCNode* node, CCObject* obj) {
     if (!node) return;
     node->setUserObject("fallback"_spr, CCBool::create(true));
+    node->setUserObject("fallback-info"_spr, obj);
 }
 
 class $modify(CCSprite) {
@@ -19,7 +20,7 @@ class $modify(CCSprite) {
             if (sprite == nullptr) {
                 sprite = CCSprite::create("bigFont.png");
             }
-            assignFallbackObj(sprite);
+            assignFallbackObj(sprite, CCString::create(name));
         }
         return sprite;
     }
@@ -38,7 +39,7 @@ class $modify(CCSprite) {
         if (sprite == nullptr) {
             sprite = CCSprite::create("bigFont.png");
         }
-        assignFallbackObj(sprite);
+        assignFallbackObj(sprite, CCString::create(name));
         return sprite;
     }
 
@@ -46,7 +47,7 @@ class $modify(CCSprite) {
         if (frame == nullptr) {
             bool result = CCSprite::initWithFile("fallback.png"_spr);
             if (result) {
-                assignFallbackObj(this);
+                assignFallbackObj(this, frame);
             }
 
             return result;
